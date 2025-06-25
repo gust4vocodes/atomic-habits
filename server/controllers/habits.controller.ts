@@ -43,6 +43,23 @@ export async function editHabits(req: Request, res: Response) {
   }
 }
 
+//GET SINGLE HABIT
+export async function getSingleHabit(req: Request, res: Response) {
+  const { id } = req.params;
+  try {
+    const habits = await prisma.habit.findUnique( {
+      where: { id }
+    });if (!habits) {
+      return res.status(404).json({ error: 'Habit not found' });
+    }
+
+    res.status(200).json(habits);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching habit' });
+  }
+}
+
 //CREATE HABITS
 export async function createHabit(req: Request, res: Response) {
   const { title } = req.body;
